@@ -1,5 +1,5 @@
 var through = require('through2'),
-    cssUnit = require('../css-unit');
+    cssUnit = require('css-unit');
     // gutil = require('gulp-util'),
     // PluginError = gutil.PluginError;
 
