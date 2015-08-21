@@ -1,19 +1,22 @@
 var through = require('through2'),
-    cssUnit = require('css-unit');
+    CSSUnit = require('css-unit');
     // gutil = require('gulp-util'),
     // PluginError = gutil.PluginError;
 
 
-CSSUnit = function() {
-
+GulpCSSUnit = function(opts) {
+  this.options = opts;
+  this.css_unit = new CSSUnit(opts);
 }
 
-CSSUnit.prototype.reference = function() {
+GulpCSSUnit.prototype.reference = function() {
+  var cssUnitInst = this.css_unit;
+
   function referenceOneFile(file, enc, callback) {
     if (file.isNull()) { return callback(null, file); }
     if (file.isStream()) { return callback(new PluginError('gulp-css-unit', 'Streaming not supported')); }
 
-    cssUnit.reference(file);
+    cssUnitInst.reference(file);
 
     callback(null, file);
   }
@@ -21,12 +24,14 @@ CSSUnit.prototype.reference = function() {
   return through.obj(referenceOneFile);
 }
 
-CSSUnit.prototype.test = function() {
+GulpCSSUnit.prototype.test = function() {
+  var cssUnitInst = this.css_unit;
+
   function testOneFile(file, enc, callback) {
     if (file.isNull()) { return callback(null, file); }
     if (file.isStream()) { return callback(new PluginError('gulp-css-unit', 'Streaming not supported')); }
 
-    cssUnit.test(file);
+    cssUnitInst.test(file);
 
     callback(null, file);
   }
@@ -34,5 +39,4 @@ CSSUnit.prototype.test = function() {
   return through.obj(testOneFile);
 }
 
-var inst = new CSSUnit();
-module.exports = inst;
+module.exports = GulpCSSUnit;
