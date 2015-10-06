@@ -16,11 +16,10 @@ GulpCSSUnit.prototype.reference = function() {
     if (file.isNull()) { return callback(null, file); }
     if (file.isStream()) { return callback(new PluginError('gulp-css-unit', 'Streaming not supported')); }
 
-    cssUnitInst.reference(file);
-
-    callback(null, file);
+    cssUnitInst.reference(file).then(function() {
+      callback(null, file);
+    });
   }
-
   return through.obj(referenceOneFile);
 }
 
@@ -31,11 +30,10 @@ GulpCSSUnit.prototype.test = function() {
     if (file.isNull()) { return callback(null, file); }
     if (file.isStream()) { return callback(new PluginError('gulp-css-unit', 'Streaming not supported')); }
 
-    cssUnitInst.test(file);
-
-    callback(null, file);
+    cssUnitInst.test(file).fail(function(reason) {
+      console.error('FAILED: ' + file.relative + '\n' + reason);
+    });
   }
-
   return through.obj(testOneFile);
 }
 
