@@ -30,9 +30,16 @@ GulpCSSUnit.prototype.test = function() {
     if (file.isNull()) { return callback(null, file); }
     if (file.isStream()) { return callback(new PluginError('gulp-css-unit', 'Streaming not supported')); }
 
-    cssUnitInst.test(file).fail(function(reason) {
-      console.error('FAILED: ' + file.relative + '\n' + reason);
-    });
+    cssUnitInst.test(file)
+    .then(
+      function successHandler() {
+        callback(null, file);
+      },
+      function errorHandler(reason) {
+        console.error('FAILED: ' + file.relative + '\n' + reason);
+        callback(null, file);
+      }
+    );
   }
   return through.obj(testOneFile);
 }
