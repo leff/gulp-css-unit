@@ -1,4 +1,4 @@
 # gulp-css-unit
-DRAFT: Gulp runner for CSS Unit.
 
-Runs CSS Unit via gulp.
+Rough first draft of Gulp runner for css-unit. See https://github.com/leff/css-unit.
+
